@@ -70,7 +70,7 @@ export class ExactOnline implements INodeType {
 					loadOptionsMethod: 'getDivisions',
 				},
 				default: '',
-				description: 'Division to get data from. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				description: 'Division to get data from. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Service Name or ID',
@@ -81,29 +81,31 @@ export class ExactOnline implements INodeType {
 					loadOptionsMethod: 'getServices',
 				},
 				default: '',
-				description: 'Service to connecto to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				description: 'Service to connecto to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Resource Name or ID',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				typeOptions: {
 					loadOptionsDependsOn:['service'],
 					loadOptionsMethod: 'getResources',
 				},
 				default: '',
-				description: 'Resource to connect to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				description: 'Resource to connect to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Operation Name or ID',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				typeOptions: {
 					loadOptionsDependsOn:['resource'],
 					loadOptionsMethod: 'getOperations',
 				},
 				default: '',
-				description: 'Operation to use. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				description: 'Operation to use. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'ID',
@@ -128,7 +130,7 @@ export class ExactOnline implements INodeType {
 				typeOptions: {
 					minValue: 1,
 				},
-				default: 60,
+				default: 50,
 				description: 'Max number of results to return',
 				displayOptions:{
 					show:	{
@@ -161,7 +163,7 @@ export class ExactOnline implements INodeType {
 					loadOptionsMethod: 'getFields',
 				},
 				default: [],
-				description: 'Fields to retrieve from Exact Online. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+				description: 'Fields to retrieve from Exact Online. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 				displayOptions:{
 					show:{
 						operation:[
@@ -225,7 +227,7 @@ export class ExactOnline implements INodeType {
 									loadOptionsMethod: 'getFieldsFilter',
 								},
 								default: '',
-								description: 'Field name to filter. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+								description: 'Field name to filter. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Operator',
@@ -337,7 +339,7 @@ export class ExactOnline implements INodeType {
 									loadOptionsMethod: 'getFieldsData',
 								},
 								default: '',
-								description: 'Field name to include in item. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
+								description: 'Field name to include in item. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Field Value',

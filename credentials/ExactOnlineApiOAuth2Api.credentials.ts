@@ -10,6 +10,7 @@ export class ExactOnlineApiOAuth2Api implements ICredentialType {
 	extends = ['oAuth2Api'];
 	//icon = 'file:exactOnline.svg';
 	displayName = 'Exact Online API OAuth2 API';
+	documentationUrl = 'https://support.exactonline.com/community/s/knowledge-base#All-All-DNO-Content-gettingstarted';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'Grant Type',
@@ -107,7 +108,7 @@ export class ExactOnlineApiOAuth2Api implements ICredentialType {
 	// The block below tells how this credential can be tested
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://example.com/',
+			baseURL: '=https://start.exactonline.{{$self["country"]}}/api/v1/current/me',
 			url: '',
 		},
 	};

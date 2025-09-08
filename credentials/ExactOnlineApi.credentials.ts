@@ -9,11 +9,13 @@ export class ExactOnlineApi implements ICredentialType {
 	name = 'exactOnlineApi';
 	//icon = 'file:exactOnline.svg';
 	displayName = 'Exact Online API With AccessToken API';
+	documentationUrl = 'https://support.exactonline.com/community/s/knowledge-base#All-All-DNO-Content-gettingstarted';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'Access Token',
 			name: 'accessToken',
 			type: 'string',
+			typeOptions: { password: true },
 			default: '',
 		},
 		{
@@ -74,7 +76,7 @@ export class ExactOnlineApi implements ICredentialType {
 	// The block below tells how this credential can be tested
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: 'https://example.com/',
+			baseURL: '=https://start.exactonline.{{$self["country"]}}/api/v1/current/me',
 			url: '',
 		},
 	};
