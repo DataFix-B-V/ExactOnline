@@ -61,23 +61,5 @@ export class ExactOnlineApi implements ICredentialType {
 			default: '=https://start.exactonline.{{$self["country"]}}',
 	},
 	];
-	// This credential is currently not used by any node directly
-	// but the HTTP Request node can use it to make requests.
-	// The credential is also testable due to the `test` property below
-	authenticate: IAuthenticateGeneric = {
-		type: 'generic',
-		properties: {
-			headers: {
-				Authorization: '={{"Bearer " + $credentials.accessToken }}',
-			},
-		},
-	};
 
-	// The block below tells how this credential can be tested
-	test: ICredentialTestRequest = {
-		request: {
-			baseURL: '=https://start.exactonline.{{$self["country"]}}/api/v1/current/me',
-			url: '',
-		},
-	};
 }
