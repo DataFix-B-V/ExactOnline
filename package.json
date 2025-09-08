@@ -1,6 +1,6 @@
 {
   "name": "@datafix/n8n-nodes-exact-online",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "description": "Exact Online Node",
   "keywords": [
     "n8n-community-node-package"

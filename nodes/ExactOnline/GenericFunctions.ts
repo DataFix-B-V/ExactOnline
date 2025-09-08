@@ -7,6 +7,7 @@ import {
 	IHttpRequestMethods,
 	ILoadOptionsFunctions,
 	IRequestOptions,
+	sleep,
 } from 'n8n-workflow';
 
 import { IDataObject, NodeApiError } from 'n8n-workflow';
@@ -129,8 +130,8 @@ export async function getAllData(this: IExecuteFunctions | IExecuteSingleFunctio
 			nextPageUrl = responseData.body.d.__next;
 
 			if(responseData.headers['x-ratelimit-minutely-remaining'] === "0"){
-				//const waitTime = (+responseData.headers['x-ratelimit-minutely-reset']) - Date.now();
-				//setTimeout(() => {  },  Math.max(0,Math.min(waitTime,60000)));
+				const waitTime = (+responseData.headers['x-ratelimit-minutely-reset']) - Date.now();
+				await sleep(waitTime);
 				
 			}
 
