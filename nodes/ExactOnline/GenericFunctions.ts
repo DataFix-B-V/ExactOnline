@@ -73,7 +73,7 @@ export async function exactOnlineApiRequest(
 
 		//@ts-ignore
 		//const response = await this.helpers.requestOAuth2.call(this, 'exactOnlineApiOAuth2Api', options, oAuth2Options);
-		this.logger.debug(options.uri);
+		this.logger.debug('url: '+options.uri);
 		const response = await this.helpers.requestWithAuthentication.call(this, credentialType, options);
 		//@ts-ignore
 		return response;
