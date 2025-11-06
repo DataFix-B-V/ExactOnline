@@ -50,46 +50,46 @@ export class ExactOnlineApiOAuth2Api implements ICredentialType {
 		},
 		{
 			displayName: 'Country',
-			name: 'country',
+			name: 'url',
 			type: 'options',
 			default: 'nl',
 			options: [
 					{
 							name: 'Belgium',
-							value: 'be',
+							value: 'https://start.exactonline.be',
 					},
 					{
 							name: 'France',
-							value: 'fr',
+							value: 'https://start.exactonline.fr',
 					},
 					{
 							name: 'Germany',
-							value: 'de',
+							value: 'https://start.exactonline.de',
 					},
 					{
 							name: 'Spain',
-							value: 'es',
+							value: 'https://start.exactonline.es',
 					},
 					{
 							name: 'The Netherlands',
-							value: 'nl',
+							value: 'https://start.exactonline.nl',
 					},
 					{
 							name: 'United Kingdom',
-							value: 'co.uk',
+							value: 'https://start.exactonline.co.uk',
 					},
 					{
 							name: 'United States of America',
-							value: 'com',
+							value: 'https://start.exactonline.com',
 					},
 			],
 	},
-	{
-			displayName: 'URL',
-			name: 'url',
-			type: 'hidden',
-			default: '=https://start.exactonline.{{$self["country"]}}',
-	},
+	// {
+	// 		displayName: 'URL',
+	// 		name: 'url',
+	// 		type: 'hidden',
+	// 		default: '=https://start.exactonline.{{$self["country"]}}',
+	// },
 	];
 
 }

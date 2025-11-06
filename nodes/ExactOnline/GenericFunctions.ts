@@ -133,7 +133,7 @@ export async function getAllData(this: IExecuteFunctions | IExecuteSingleFunctio
 			if(responseData.headers['x-ratelimit-minutely-remaining'] === "0"){
 				const waitTime = (+responseData.headers['x-ratelimit-minutely-reset']) - Date.now();
 				await sleep(waitTime);
-				
+
 			}
 
 		} while ((limit === 0 || returnData.length < limit) && responseData.body.d.__next);
@@ -148,6 +148,12 @@ export async function getFields(this: IExecuteFunctions | IExecuteSingleFunction
 
 			return endpointConfig.fields.map(a => a.name);
 
+}
+
+export async function getPrimaryKeyField(this: IExecuteFunctions | IExecuteSingleFunctions | ILoadOptionsFunctions | IHookFunctions,
+	endpointConfig:endpointConfiguration): Promise<string | undefined> {
+
+			return endpointConfig.fields.find(x => x.primarykey === true)?.name;
 }
 
 export async function getMandatoryFields(this: IExecuteFunctions | IExecuteSingleFunctions | ILoadOptionsFunctions | IHookFunctions,
@@ -208,5 +214,3 @@ items.map(({ name }) => ({ name, value: name }));
 
 export const toOptionsFromStringArray = (items:string[]) =>
 	items.map((x) => ({name:x.charAt(0).toUpperCase() + x.slice(1), value:x}));
-
-

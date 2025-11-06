@@ -19,7 +19,8 @@ export type endpointFieldConfiguration = {
 	type:string,
 	webhook?:boolean,
 	filter?:boolean,
-	mandatory:boolean,
+	mandatory:boolean
+	primarykey:boolean
 }
 
 export type endpointConfiguration = {

@@ -8,7 +8,7 @@ import {
 	NodeOperationError,
 	IDataObject,
 } from 'n8n-workflow';
-import { exactOnlineApiRequest, getAllData, getCurrentDivision, getData, getEndpointConfig, getFields, getFieldType, getMandatoryFields, getResourceOptions, getServiceOptions, toDivisionOptions, toFieldFilterOptions, toFieldSelectOptions, toOptionsFromStringArray } from './GenericFunctions';
+import { exactOnlineApiRequest, getAllData, getCurrentDivision, getData, getEndpointConfig, getFields, getFieldType, getMandatoryFields, getResourceOptions, getServiceOptions, toDivisionOptions, toFieldFilterOptions, toFieldSelectOptions, toOptionsFromStringArray, getPrimaryKeyField } from './GenericFunctions';
 import { endpointConfiguration, endpointFieldConfiguration, LoadedDivision, LoadedFields } from './types';
 
 export class ExactOnline implements INodeType {
@@ -417,8 +417,6 @@ export class ExactOnline implements INodeType {
 
 				return toFieldFilterOptions(fields as endpointFieldConfiguration[]);
 			},
-
-
 		},
 	};
 
@@ -453,9 +451,13 @@ export class ExactOnline implements INodeType {
 				if(operation === 'get'){
 					const qs: IDataObject = {};
 					const id = this.getNodeParameter('id', itemIndex, '') as string;
+
+					const primaryField = await getPrimaryKeyField.call(this, endpointConfig);
+
 					if(id!==''){
-						qs['$filter'] = `ID eq guid'${id}'`;
-						qs['$top'] = 1;
+						qs['$filter'] = `${primaryField} eq guid'${id}'`;
+						// qs['$filter'] = `ID eq guid'${id}'`;
+
 						responseData = await getData.call(this, uri,{},qs);
 						returnData = returnData.concat(responseData);
 					}
@@ -465,12 +467,14 @@ export class ExactOnline implements INodeType {
 					const limit = this.getNodeParameter('limit', itemIndex, 0) as number;
 					const conjunction = this.getNodeParameter('conjunction', itemIndex, 'and') as string;
 					const filter = this.getNodeParameter('filter.filter', itemIndex, 0) as IDataObject[];
+
 					if(excludeSelection){
 						qs['$select'] = onlyNotSelectedFields.join(',');
 					}
 					else if(selectedFields.length>0){
 						qs['$select'] = selectedFields.join(',');
 					}
+
 					const filters = [];
 					if(filter.length>0){
 						for(let filterIndex = 0; filterIndex < filter.length; filterIndex++){
@@ -487,12 +491,31 @@ export class ExactOnline implements INodeType {
 								case 'number':
 									filters.push(`${fieldName} ${filter[filterIndex].operator} ${filter[filterIndex].value}`);
 									break;
+								case 'datetime':
+									let dateTime = '';
+
+									// Convert to ISO 8601 format
+									try{
+										dateTime = new Date(fieldValue).toISOString();
+									}catch(error){
+										throw new NodeOperationError(this.getNode(), `The value '${fieldValue}' is not a valid date-time format. Enter a ISO 8601 date-time string.`, {
+											itemIndex,
+										});
+									}
+
+									filters.push(`${fieldName} ${filter[filterIndex].operator} datetime'${dateTime}'`);
+									break;
+								case 'guid':
+									filters.push(`${fieldName} ${filter[filterIndex].operator} guid'${filter[filterIndex].value}'`);
+									break;
 								default:
 									break;
 							}
 						}
 					}
 					qs['$filter'] = filters.join(` ${conjunction} `);
+					// If limit is not set, default to 1
+					// qs['$top'] = limit || 1;
 
 					responseData = await getAllData.call(this, uri,limit,{},qs);
 					returnData = returnData.concat(responseData);
