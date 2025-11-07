@@ -456,7 +456,6 @@ export class ExactOnline implements INodeType {
 
 					if(id!==''){
 						qs['$filter'] = `${primaryField} eq guid'${id}'`;
-						// qs['$filter'] = `ID eq guid'${id}'`;
 
 						responseData = await getData.call(this, uri,{},qs);
 						returnData = returnData.concat(responseData);
@@ -514,8 +513,6 @@ export class ExactOnline implements INodeType {
 						}
 					}
 					qs['$filter'] = filters.join(` ${conjunction} `);
-					// If limit is not set, default to 1
-					// qs['$top'] = limit || 1;
 
 					responseData = await getAllData.call(this, uri,limit,{},qs);
 					returnData = returnData.concat(responseData);
@@ -563,6 +560,23 @@ export class ExactOnline implements INodeType {
 										break;
 									case 'number':
 										body[`${fieldName}`] = +fieldValue;
+										break;
+									case 'guid':
+										body[`${fieldName}`] = fieldValue;
+										break;
+									case 'datetime':
+										let dateTime = '';
+
+										// Convert to ISO 8601 format
+										try{
+											dateTime = new Date(fieldValue).toISOString();
+										}catch(error){
+											throw new NodeOperationError(this.getNode(), `The value '${fieldValue}' is not a valid date-time format. Enter a ISO 8601 date-time string.`, {
+												itemIndex,
+											});
+										}
+
+										body[`${fieldName}`] = dateTime;
 										break;
 									default:
 										break;
@@ -616,6 +630,23 @@ export class ExactOnline implements INodeType {
 										break;
 									case 'number':
 										body[`${fieldName}`] = +fieldValue;
+										break;
+									case 'guid':
+										body[`${fieldName}`] = fieldValue;
+										break;
+									case 'datetime':
+										let dateTime = '';
+
+										// Convert to ISO 8601 format
+										try{
+											dateTime = new Date(fieldValue).toISOString();
+										}catch(error){
+											throw new NodeOperationError(this.getNode(), `The value '${fieldValue}' is not a valid date-time format. Enter a ISO 8601 date-time string.`, {
+												itemIndex,
+											});
+										}
+
+										body[`${fieldName}`] = dateTime;
 										break;
 									default:
 										break;
