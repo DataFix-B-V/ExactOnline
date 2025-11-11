@@ -24,7 +24,7 @@ export class ExactOnline implements INodeType {
 		},
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
-		usableAsTool: true,
+		// usableAsTool: true,
 		credentials: [
 			{
 				name: 'exactOnlineApi',

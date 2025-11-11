@@ -6,7 +6,7 @@ import {
 	IHookFunctions,
 	IHttpRequestMethods,
 	ILoadOptionsFunctions,
-	IRequestOptions,
+	IHttpRequestOptions,
 	sleep,
 } from 'n8n-workflow';
 
@@ -24,14 +24,14 @@ export async function exactOnlineApiRequest(
 	nextPageUrl = '',
 	// tslint:disable-next-line:no-any
 ): Promise<any> {
-	let options: IRequestOptions  = {
+	let options: IHttpRequestOptions  = {
 		headers: {
 			'Content-Type': 'application/json',
 		},
 		method,
 		body,
 		qs,
-		uri: ``,//`${credentials.url}${uri}`,
+		url: '',
 		json: true,
 		//@ts-ignore
 		resolveWithFullResponse: true,
@@ -48,17 +48,17 @@ export async function exactOnlineApiRequest(
 		credentialType = 'exactOnlineApi';
 
 		const baseUrl = credentials.url || 'https://start.exactonline.nl';
-		options.uri = `${baseUrl}${uri}`;
+		options.url = `${baseUrl}${uri}`;
 	} else {
 		const credentials = await this.getCredentials('exactOnlineApiOAuth2Api');
 		credentialType = 'exactOnlineApiOAuth2Api';
 
 		const baseUrl = credentials.url || 'https://start.exactonline.nl';
-		options.uri = `${baseUrl}${uri}`;
+		options.url = `${baseUrl}${uri}`;
 	}
 
 	if(nextPageUrl!==''){
-		options.uri = nextPageUrl;
+		options.url = nextPageUrl;
 	}
 	options = Object.assign({}, options, option);
 

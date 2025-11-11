@@ -1,6 +1,6 @@
 {
   "name": "@datafix/n8n-nodes-exact-online",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Exact Online Node",
   "keywords": [
     "n8n-community-node-package"
@@ -49,6 +49,6 @@
     "typescript": "^5.8.2"
   },
   "peerDependencies": {
-    "n8n-workflow": "*"
+    "n8n-workflow": "^1.17.0"
   }
 }
