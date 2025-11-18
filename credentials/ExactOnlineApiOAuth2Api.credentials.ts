@@ -84,12 +84,6 @@ export class ExactOnlineApiOAuth2Api implements ICredentialType {
 					},
 			],
 	},
-	// {
-	// 		displayName: 'URL',
-	// 		name: 'url',
-	// 		type: 'hidden',
-	// 		default: '=https://start.exactonline.{{$self["country"]}}',
-	// },
 	];
 
 }
