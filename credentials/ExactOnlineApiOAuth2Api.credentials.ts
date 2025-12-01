@@ -1,6 +1,7 @@
 import {
 	ICredentialType,
 	INodeProperties,
+	ICredentialTestRequest,
 } from 'n8n-workflow';
 
 export class ExactOnlineApiOAuth2Api implements ICredentialType {
@@ -54,36 +55,42 @@ export class ExactOnlineApiOAuth2Api implements ICredentialType {
 			type: 'options',
 			default: 'nl',
 			options: [
-					{
-							name: 'Belgium',
-							value: 'https://start.exactonline.be',
-					},
-					{
-							name: 'France',
-							value: 'https://start.exactonline.fr',
-					},
-					{
-							name: 'Germany',
-							value: 'https://start.exactonline.de',
-					},
-					{
-							name: 'Spain',
-							value: 'https://start.exactonline.es',
-					},
-					{
-							name: 'The Netherlands',
-							value: 'https://start.exactonline.nl',
-					},
-					{
-							name: 'United Kingdom',
-							value: 'https://start.exactonline.co.uk',
-					},
-					{
-							name: 'United States of America',
-							value: 'https://start.exactonline.com',
-					},
+				{
+						name: 'Belgium',
+						value: 'https://start.exactonline.be',
+				},
+				{
+						name: 'France',
+						value: 'https://start.exactonline.fr',
+				},
+				{
+						name: 'Germany',
+						value: 'https://start.exactonline.de',
+				},
+				{
+						name: 'Spain',
+						value: 'https://start.exactonline.es',
+				},
+				{
+						name: 'The Netherlands',
+						value: 'https://start.exactonline.nl',
+				},
+				{
+						name: 'United Kingdom',
+						value: 'https://start.exactonline.co.uk',
+				},
+				{
+						name: 'United States of America',
+						value: 'https://start.exactonline.com',
+				},
 			],
-	},
+		},
 	];
 
+	test: ICredentialTestRequest = {
+		request: {
+			method: 'GET',
+			url: '={{ $credentials.url }}/api/v1/current/Me',
+		},
+	}
 }
