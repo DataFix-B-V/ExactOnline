@@ -9,6 +9,7 @@ export class ExactOnlineApi implements ICredentialType {
 	name = 'exactOnlineApi';
 	//icon = 'file:exactOnline.svg';
 	displayName = 'Exact Online API With AccessToken API';
+	documentationUrl = 'https://support.exactonline.com/community/s/knowledge-base#All-All-DNO-Content-gettingstarted';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'Access Token',
