@@ -198,7 +198,6 @@ export async function getEndpointConfig(this: IExecuteFunctions | IExecuteSingle
 
 }
 
-
 export const toDivisionOptions = (items: LoadedDivision[]) =>
 	items.map(({ Code, CustomerName, Description }) => ({ name: `${CustomerName} : ${Description}`, value: Code }));
 

@@ -1,13 +1,14 @@
 import {
 	ICredentialType,
 	INodeProperties,
+	ICredentialTestRequest,
+	IAuthenticateGeneric,
 } from 'n8n-workflow';
 
 export class ExactOnlineApi implements ICredentialType {
 	name = 'exactOnlineApi';
 	//icon = 'file:exactOnline.svg';
 	displayName = 'Exact Online API With AccessToken API';
-	documentationUrl = 'https://support.exactonline.com/community/s/knowledge-base#All-All-DNO-Content-gettingstarted';
 	properties: INodeProperties[] = [
 		{
 			displayName: 'Access Token',
@@ -20,7 +21,7 @@ export class ExactOnlineApi implements ICredentialType {
 			displayName: 'Country',
 			name: 'url',
 			type: 'options',
-			default: 'nl',
+			default: 'The Netherlands',
 			options: [
 					{
 							name: 'Belgium',
@@ -54,4 +55,19 @@ export class ExactOnlineApi implements ICredentialType {
 		},
 	];
 
+	authenticate: IAuthenticateGeneric = {
+		type: 'generic',
+		properties: {
+			headers: {
+				'Authorization': '=Bearer {{ $credentials.accessToken }}',
+			},
+		},
+	};
+
+	test: ICredentialTestRequest = {
+		request: {
+			method: 'GET',
+			url: '={{ $credentials.url }}/api/v1/current/Me',
+		},
+	};
 }

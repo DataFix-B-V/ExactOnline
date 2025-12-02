@@ -4,14 +4,13 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	NodeConnectionType,
 	NodeOperationError,
 	ILoadOptionsFunctions,
 } from 'n8n-workflow';
 import { exactOnlineApiRequest, getAllData, getCurrentDivision, getData, getEndpointConfig, getFields, getFieldType, getMandatoryFields, getResourceOptions, getServiceOptions, toDivisionOptions, toFieldFilterOptions, toFieldSelectOptions, toOptionsFromStringArray, getPrimaryKeyField } from './GenericFunctions';
 import { endpointConfiguration, endpointFieldConfiguration, LoadedDivision, LoadedFields } from './types';
 
-export class exactOnline implements INodeType {
+export class ExactOnline implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Exact Online',
 		name: 'exactOnline',
@@ -22,9 +21,9 @@ export class exactOnline implements INodeType {
 		defaults: {
 			name: 'Exact Online',
 		},
-		inputs: [NodeConnectionType.Main],
-		outputs: [NodeConnectionType.Main],
-		// usableAsTool: true,
+		inputs: ['main'],
+		outputs: ['main'],
+		usableAsTool: true,
 		credentials: [
 			{
 				name: 'exactOnlineApi',
@@ -425,7 +424,7 @@ export class exactOnline implements INodeType {
 	// You can make async calls and use `await`.
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
-		let returnData: IDataObject[] = [];
+		let returnData: INodeExecutionData[] = [];
 		const length = items.length;
 
 
@@ -457,9 +456,16 @@ export class exactOnline implements INodeType {
 						qs['$filter'] = `${primaryField} eq guid'${id}'`;
 
 						responseData = await getData.call(this, uri,{},qs);
-						returnData = returnData.concat(responseData);
+						if (Array.isArray(responseData)) {
+							for (const data of responseData) {
+								returnData.push({ json: data as IDataObject, pairedItem: { item: itemIndex } });
+							}
+						} else {
+							returnData.push({ json: responseData as IDataObject, pairedItem: { item: itemIndex } });
+						}
 					}
 				}
+
 				if(operation ==='getAll'){
 					const qs: IDataObject = {};
 					const limit = this.getNodeParameter('limit', itemIndex, 0) as number;
@@ -514,7 +520,13 @@ export class exactOnline implements INodeType {
 					qs['$filter'] = filters.join(` ${conjunction} `);
 
 					responseData = await getAllData.call(this, uri,limit,{},qs);
-					returnData = returnData.concat(responseData);
+					if (Array.isArray(responseData)) {
+						for (const data of responseData) {
+							returnData.push({ json: data as IDataObject, pairedItem: { item: itemIndex } });
+						}
+					} else {
+						returnData.push({ json: responseData as IDataObject, pairedItem: { item: itemIndex } });
+					}
 				}
 
 				if(operation ==='post'){
@@ -585,7 +597,13 @@ export class exactOnline implements INodeType {
 					}
 
 					responseData = await exactOnlineApiRequest.call(this,'POST', uri,body,{},{headers: {Prefer:'return=representation'}});
-					returnData = returnData.concat(responseData.body.d);
+					if (Array.isArray(responseData)) {
+						for (const data of responseData) {
+							returnData.push({ json: data as IDataObject, pairedItem: { item: itemIndex } });
+						}
+					} else {
+						returnData.push({ json: responseData as IDataObject, pairedItem: { item: itemIndex } });
+					}
 				}
 
 				if(operation === 'put'){
@@ -656,7 +674,7 @@ export class exactOnline implements INodeType {
 					const uriWithId= `${uri}(guid'${id}')`;
 					responseData = await exactOnlineApiRequest.call(this,'PUT',uriWithId,body,{});
 					if(responseData.statusCode === 204){
-						returnData = returnData.concat({msg:'Succesfully changed field values.'});
+						returnData.push({ json: {msg:'Succesfully changed field values.'}, pairedItem: { item: itemIndex } });
 					}
 					else{
 						throw new NodeOperationError(this.getNode(), `Something went wrong.`, {
@@ -677,7 +695,7 @@ export class exactOnline implements INodeType {
 					const uriWithId= `${uri}(guid'${id}')`;
 					responseData = await exactOnlineApiRequest.call(this,'DELETE',uriWithId,{},{});
 					if(responseData.statusCode === 204){
-						returnData = returnData.concat({msg:'Succesfully Deleted record.'});
+						returnData.push({ json: {msg:'Succesfully deleted record.'}, pairedItem: { item: itemIndex } });
 					}
 					else{
 						throw new NodeOperationError(this.getNode(), `Something went wrong.`, {
@@ -693,7 +711,7 @@ export class exactOnline implements INodeType {
 				// This node should never fail but we want to showcase how
 				// to handle errors.
 				if (this.continueOnFail()) {
-					returnData.push({ error });
+					returnData.push({ json: { error }, pairedItem: { item: itemIndex } });
 				} else {
 					// Adding `itemIndex` allows other workflows to handle this error
 					if (error.context) {

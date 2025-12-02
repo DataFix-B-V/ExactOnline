@@ -1,7 +1,6 @@
 import {
 	ICredentialType,
 	INodeProperties,
-	ICredentialTestRequest,
 } from 'n8n-workflow';
 
 export class ExactOnlineApiOAuth2Api implements ICredentialType {
@@ -86,11 +85,4 @@ export class ExactOnlineApiOAuth2Api implements ICredentialType {
 			],
 		},
 	];
-
-	test: ICredentialTestRequest = {
-		request: {
-			method: 'GET',
-			url: '={{ $credentials.url }}/api/v1/current/Me',
-		},
-	}
 }
