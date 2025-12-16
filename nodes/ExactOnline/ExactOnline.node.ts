@@ -6,6 +6,7 @@ import {
 	INodeTypeDescription,
 	NodeOperationError,
 	ILoadOptionsFunctions,
+	NodeConnectionTypes,
 } from 'n8n-workflow';
 import { exactOnlineApiRequest, getAllData, getCurrentDivision, getData, getEndpointConfig, getFields, getFieldType, getMandatoryFields, getResourceOptions, getServiceOptions, toDivisionOptions, toFieldFilterOptions, toFieldSelectOptions, toOptionsFromStringArray, getPrimaryKeyField } from './GenericFunctions';
 import { endpointConfiguration, endpointFieldConfiguration, LoadedDivision, LoadedFields } from './types';
@@ -21,8 +22,8 @@ export class ExactOnline implements INodeType {
 		defaults: {
 			name: 'Exact Online',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		usableAsTool: true,
 		credentials: [
 			{
